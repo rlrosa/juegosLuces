@@ -49,11 +49,15 @@ void setup()  {
 		delay(1000);
 }
 
-#define ON               255
-#define OFF              0
-#define STEP             5
+#define DEBUG            1
+
+#define ON               255  // max led value when turned on
+#define OFF              0    // min led value when turned off
+#define STEP             5    // dimmer inc step size
+
 // After FADE_OUT_SAMPLES at the setpoint, will turn the output off.
-#define FADE_OUT_SAMPLES 10000
+#define FADE_OUT         0    // enable(1)/disable(0)
+#define FADE_OUT_SAMPLES 800  // samples before fading out
 
 // Will wait for FILTER_SAMPLES stable successive samples before
 // changing the output.
@@ -63,6 +67,8 @@ void setup()  {
 #define max(a,b)        (a>b?a:b)
 #define lim(a,low,high) min(max(a,low), high)
 #define setpoint(s)     (s?ON:OFF)
+#define steady(cnt)     (cnt==FADE_OUT_SAMPLES)
+#define filter_ok(cnt)  (cnt==FILTER_SAMPLES)
 
 int rx_ = -1;
 int cnt_filter = 0;
@@ -75,24 +81,27 @@ void loop()  {
 		int rx = digitalRead(pinIRReceiverOut);
 
 		// Noise filter
-		// Will change output only after
+		// Will change output only after FILTER_SAMPLES stable samples.
 		if (rx != rx_) {
 				// start counter again.
 				cnt_filter = 0;
 		}
 		else {
-				if(cnt_filter++ > FILTER_SAMPLES) {
-						cnt_filter = FILTER_SAMPLES;
+				cnt_filter = min(cnt_filter++, FILTER_SAMPLES);
+				if(filter_ok(cnt_filter)) {
+						if(out != rx) {
+								cnt_steady = 0;
+						}
 						out  = rx;
 				}
 		}
 
 		// Dimm to setpoint
 		int to_add = 0;
-		if(val == (rx_?ON:OFF)) {
+		if(val == (out?ON:OFF) || steady(cnt_steady)) {
 				// setpoint has been reached
-				if(cnt_steady++ > FADE_OUT_SAMPLES) {
-						cnt_steady = FADE_OUT_SAMPLES;
+				cnt_steady = min(cnt_steady++, FADE_OUT_SAMPLES);
+				if(FADE_OUT && steady(cnt_steady)) {
 						// turn off led, nothing is happening.
 						to_add = -STEP;
 				}
@@ -105,10 +114,15 @@ void loop()  {
 		val = lim(val+to_add, OFF, ON);
 		analogWrite(ledPin, val);
 
-		if(cnt_print++ > 50) {
+		if(DEBUG && cnt_print++ > 50) {
 				Serial.print("Rx:");Serial.print(rx);
+				Serial.print("\tFilter:");Serial.print(filter_ok(cnt_filter));
+				Serial.print("\tOut:");Serial.print(out);
 				Serial.print("\tVal:");Serial.print(val);
-				Serial.print("\tFadeOut:");Serial.print(FADE_OUT_SAMPLES - cnt_steady);
+				if(FADE_OUT) {
+						Serial.print("\tSteady:");Serial.print(steady(cnt_steady));
+						Serial.print("\tFadeOut:");Serial.print(FADE_OUT_SAMPLES - cnt_steady);
+				}
 				Serial.println("");
 				cnt_print = 0;
 		}

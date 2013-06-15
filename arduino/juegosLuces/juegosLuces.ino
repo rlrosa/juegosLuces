@@ -59,8 +59,10 @@ void setup()  {
 #define FADE_OUT         0    // enable(1)/disable(0)
 #define FADE_OUT_SAMPLES 800  // samples before fading out
 
+//// Input filter
 // Will wait for FILTER_SAMPLES stable successive samples before
 // changing the output.
+// Set to 0 to disable filter.
 #define FILTER_SAMPLES 10
 
 #define min(a,b)        (a<b?a:b)

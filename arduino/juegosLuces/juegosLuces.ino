@@ -53,7 +53,7 @@ void setup()  {
 
 #define DEBUG            1
 
-#define LOOP_MS          10 // ms
+#define LOOP_MS          5 // ms
 #define LOOP_PRINT       50 // print once every LOOP_PRINT*LOOP_MS ms.
 
 #define ON               200  // max led value when turned on

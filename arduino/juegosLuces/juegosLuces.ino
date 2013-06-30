@@ -56,7 +56,7 @@ void setup()  {
 
 #define ON               200  // max led value when turned on
 #define OFF              0    // min led value when turned off
-#define STEP             30    // dimmer inc step size
+#define STEP             4    // dimmer inc step size
 
 // After FADE_OUT_SAMPLES at the setpoint, will turn the output off.
 #define FADE_OUT         0    // enable(1)/disable(0)

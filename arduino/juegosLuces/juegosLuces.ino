@@ -36,8 +36,6 @@ void setup()  {
 		//// Setup IR receiver
 		// Read RX output
 		pinMode(pinIRReceiverOut, INPUT);
-		// Disable pull up resistor
-		digitalWrite(pinIRReceiverOut, LOW);
 
 		//// Notification LED
 		analogWrite(ledPin, 0);

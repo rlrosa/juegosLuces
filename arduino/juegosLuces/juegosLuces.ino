@@ -28,7 +28,7 @@ void enableIrTransmitters(int khz) {
 		TIMER_ENABLE_PWM;
 }
 
-int ledPin = 9;           // LED connected to digital pin 9
+int ledPin = 6;           // LED connected to digital pin 9
 // IR receiver
 int pinIRReceiverOut = 7; // IR receiver - Output
 

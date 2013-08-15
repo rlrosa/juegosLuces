@@ -55,7 +55,7 @@ void setup()  {
 #define LOOP_PRINT       50 // print once every LOOP_PRINT*LOOP_MS ms.
 
 #define ON               200  // max led value when turned on
-#define OFF              0    // min led value when turned off
+#define OFF              5    // min led value when turned off
 #define STEP             2    // dimmer inc step size
 
 // After FADE_OUT_SAMPLES at the setpoint, will turn the output off.

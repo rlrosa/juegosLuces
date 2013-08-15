@@ -28,7 +28,8 @@ void enableIrTransmitters(int khz) {
 		TIMER_ENABLE_PWM;
 }
 
-int ledPin = 6;           // LED connected to digital pin 9
+int ledPin = 6;           // LED connected to this pin
+int ledPinNot = 5;        // LED connected to this pin
 // IR receiver
 int pinIRReceiverOut = 7; // IR receiver - Output
 
@@ -80,6 +81,7 @@ int cnt_filter = 0;
 int cnt_print  = 0;
 int cnt_steady = 0;
 int val = 0;
+int val_not = 0;
 int out = 0;
 int dly_ok = 1;
 
@@ -124,6 +126,8 @@ void loop()  {
 		}
 		val = lim(val+to_add, OFF, ON);
 		analogWrite(ledPin, val);
+		val_not = lim(ON + OFF - val, OFF, ON);
+		analogWrite(ledPinNot, val_not);
 
 		if(DEBUG && cnt_print++ > LOOP_PRINT) {
 				Serial.print("Rx:");Serial.print(rx);

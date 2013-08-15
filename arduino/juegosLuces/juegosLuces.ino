@@ -2,6 +2,32 @@
 bla.
  */
 
+#define DEBUG            1
+
+#define LOOP_MS          5 // ms
+#define LOOP_PRINT       50 // print once every LOOP_PRINT*LOOP_MS ms.
+
+#define ON               200  // max led value when turned on
+#define OFF              5    // min led value when turned off
+#define STEP             2    // dimmer inc step size
+
+// After FADE_OUT_SAMPLES at the setpoint, will turn the output off.
+#define FADE_OUT         0    // enable(1)/disable(0)
+#define FADE_OUT_SAMPLES 100  // samples before fading out
+
+//// Input filter
+// Will wait for FILTER_SAMPLES stable successive samples before
+// changing the output.
+// Set to 0 to disable filter.
+#define FILTER_SAMPLES 3
+
+#define min(a,b)        (a<b?a:b)
+#define max(a,b)        (a>b?a:b)
+#define lim(a,low,high) min(max(a,low), high)
+#define setpoint(s)     (s?ON:OFF)
+#define steady(cnt)     (cnt==FADE_OUT_SAMPLES)
+#define filter_ok(cnt)  (cnt==FILTER_SAMPLES)
+
 // Set up 38kHz IR TX on pin 3
 #define IR_KHZ               56
 #define TIMER_PWM_PIN        3
@@ -49,32 +75,6 @@ void setup()  {
 
 		delay(1000);
 }
-
-#define DEBUG            1
-
-#define LOOP_MS          5 // ms
-#define LOOP_PRINT       50 // print once every LOOP_PRINT*LOOP_MS ms.
-
-#define ON               200  // max led value when turned on
-#define OFF              5    // min led value when turned off
-#define STEP             2    // dimmer inc step size
-
-// After FADE_OUT_SAMPLES at the setpoint, will turn the output off.
-#define FADE_OUT         0    // enable(1)/disable(0)
-#define FADE_OUT_SAMPLES 100  // samples before fading out
-
-//// Input filter
-// Will wait for FILTER_SAMPLES stable successive samples before
-// changing the output.
-// Set to 0 to disable filter.
-#define FILTER_SAMPLES 3
-
-#define min(a,b)        (a<b?a:b)
-#define max(a,b)        (a>b?a:b)
-#define lim(a,low,high) min(max(a,low), high)
-#define setpoint(s)     (s?ON:OFF)
-#define steady(cnt)     (cnt==FADE_OUT_SAMPLES)
-#define filter_ok(cnt)  (cnt==FILTER_SAMPLES)
 
 int rx_ = -1;
 int cnt_filter = 0;

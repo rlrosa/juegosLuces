@@ -74,6 +74,16 @@ void setup()  {
 		Serial.begin(115200);
 
 		delay(1000);
+
+		//// signal init
+		for(int i=0; i<2; i++) {
+				analogWrite(ledPin, ON);
+				analogWrite(ledPinNot, OFF);
+				delay(1000);
+				analogWrite(ledPin, OFF);
+				analogWrite(ledPinNot, ON);
+				delay(1000);
+		}
 }
 
 int rx_ = -1;

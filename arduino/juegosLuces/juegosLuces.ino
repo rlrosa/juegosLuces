@@ -80,8 +80,8 @@ int rx_ = -1;
 int cnt_filter = 0;
 int cnt_print  = 0;
 int cnt_steady = 0;
-int val = 0;
-int val_not = 0;
+int val = OFF;
+int val_not = OFF;
 int out = 0;
 int dly_ok = 1;
 
